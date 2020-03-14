@@ -1,26 +1,27 @@
-package ar.com.educacionit.ws.impl;
+package ar.com.educacionit.dao.impl;
 
 import java.util.Optional;
-
-import javax.jws.WebMethod;
-import javax.jws.WebService;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
+import ar.com.educacionit.dao.ProductoDAO;
 import ar.com.educacionit.domain.Producto;
 import ar.com.educacionit.hibernate.HibernateUtils;
-import ar.com.educacionit.ws.ProductoService;
 
-@WebService(endpointInterface = "ar.com.educacionit.ws.ProductoService")
-public class ProductoServiceImpl implements ProductoService {
+public class ProductoDAOImpl implements ProductoDAO {
 
-	@WebMethod()
-	public Producto getProducto(String codigoProducto) {
-
-		SessionFactory factory = HibernateUtils.getSessionFactory();
-
+	private SessionFactory factory;
+	
+	public ProductoDAOImpl() {
+		
+		factory = HibernateUtils.getSessionFactory();
+	}
+	
+	@Override
+	public Producto getProducto(String codigo) {
+		
 		Session session = factory.getCurrentSession();
 
 		Producto producto = null;
@@ -33,14 +34,12 @@ public class ProductoServiceImpl implements ProductoService {
 			session.getTransaction().begin();
 
 			// Create an HQL statement, query the object.
-			// Equivalent to the SQL statement:
-			// Select e.* from EMPLOYEE e order by e.EMP_NAME, e.EMP_NO
 			String sql = "Select e from " + Producto.class.getName() + " e where e.codigo=:codigo ";
 
 			// Create Query object.
 			Query<Producto> query = session.createQuery(sql);
 
-			query.setParameter("codigo", codigoProducto);
+			query.setParameter("codigo", codigo);
 
 			// Execute query.
 			Optional<Producto> employees = query.uniqueResultOptional();
@@ -59,4 +58,5 @@ public class ProductoServiceImpl implements ProductoService {
 		}
 		return producto;
 	}
+
 }

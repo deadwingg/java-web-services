@@ -16,6 +16,7 @@
 
 	<modules>
 		<module>ws-soap-server</module>
-    <module>ws-domain</module>
+    	<module>ws-domain</module>
+    	<module>ws-services</module>
   </modules>
 </project>

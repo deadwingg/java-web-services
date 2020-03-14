@@ -3,16 +3,18 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
 	xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>java-web-services</groupId>
 		<artifactId>java-web-services</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<modelVersion>4.0.0</modelVersion>
-	<artifactId>ws-soap-server</artifactId>
-	<name>ws-soap-server</name>
+	<artifactId>ws-services</artifactId>
+	<name>ws-services</name>
 	<url>http://maven.apache.org</url>
-	<packaging>jar</packaging>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -23,11 +25,6 @@
 		<dependency>
 			<groupId>java-web-services</groupId>
 			<artifactId>ws-domain</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>java-web-services</groupId>
-			<artifactId>ws-services</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
