@@ -1,5 +1,7 @@
 package ar.com.educacionit.ws.impl;
 
+import java.util.List;
+
 import javax.jws.WebService;
 
 import ar.com.educacionit.domain.Producto;
@@ -15,5 +17,13 @@ public class ProductoWSServiceImpl implements ProductoWSService {
 		ProductoService productoService = new ProductoServiceImpl();
 		
 		return productoService.getProducto(codigoProducto);
+	}
+
+	@Override
+	public List<Producto> findProductos() {
+		
+		ProductoService productoService = new ProductoServiceImpl();
+		
+		return productoService.findProductos();
 	}
 }

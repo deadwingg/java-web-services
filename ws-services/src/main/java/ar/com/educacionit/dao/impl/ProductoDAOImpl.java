@@ -1,5 +1,7 @@
 package ar.com.educacionit.dao.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.hibernate.Session;
@@ -57,6 +59,41 @@ public class ProductoDAOImpl implements ProductoDAO {
 			session.getTransaction().rollback();
 		}
 		return producto;
+	}
+
+	@Override
+	public List<Producto> findProductos() {
+		Session session = factory.getCurrentSession();
+
+		List<Producto> products = new ArrayList<Producto>();
+		
+		try {
+
+			// All the action with DB via Hibernate
+			// must be located in one transaction.
+			// Start Transaction.
+			session.getTransaction().begin();
+
+			// Create an HQL statement, query the object.
+			String sql = "Select e from " + Producto.class.getName() + " e ";
+
+			// Create Query object.
+			Query<Producto> query = session.createQuery(sql);
+
+			// query.setParameter("codigo", codigo);
+
+			// Execute query.
+			products = query.getResultList();
+
+			// Commit data.
+			session.getTransaction().commit();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			// Rollback in case of an error occurred.
+			session.getTransaction().rollback();
+		}
+		return products;
 	}
 
 }

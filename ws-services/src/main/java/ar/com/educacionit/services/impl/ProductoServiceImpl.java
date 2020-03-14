@@ -1,5 +1,7 @@
 package ar.com.educacionit.services.impl;
 
+import java.util.List;
+
 import ar.com.educacionit.dao.ProductoDAO;
 import ar.com.educacionit.dao.impl.ProductoDAOImpl;
 import ar.com.educacionit.domain.Producto;
@@ -16,5 +18,10 @@ public class ProductoServiceImpl implements ProductoService {
 	@Override
 	public Producto getProducto(String codigo) {
 		return this.productoDao.getProducto(codigo);
+	}
+
+	@Override
+	public List<Producto> findProductos() {
+		return this.productoDao.findProductos();
 	}
 }

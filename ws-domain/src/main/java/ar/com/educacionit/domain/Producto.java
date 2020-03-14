@@ -14,11 +14,12 @@ public class Producto {
 	@Column(name = "ID")
 	private Long id;// PK
 
+	@Column(name = "DESCRIPCION")
 	private String descripcion;
 
 	private Float precio;
 
-	@Column(name = "CODIGO", length = 20, nullable = false)
+	@Column(name = "CODIGO", length = 20, nullable = false, unique = true)
 	private String codigo;// UNIQUE
 
 	public Long getId() {
