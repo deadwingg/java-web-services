@@ -5,6 +5,7 @@ import java.util.List;
 import javax.jws.WebService;
 
 import ar.com.educacionit.domain.Producto;
+import ar.com.educacionit.exception.InternalServerError;
 import ar.com.educacionit.services.ProductoService;
 import ar.com.educacionit.services.impl.ProductoServiceImpl;
 import ar.com.educacionit.ws.ProductoWSService;
@@ -20,10 +21,14 @@ public class ProductoWSServiceImpl implements ProductoWSService {
 	}
 
 	@Override
-	public List<Producto> findProductos() {
+	public List<Producto> findProductos() throws InternalServerError {
 		
 		ProductoService productoService = new ProductoServiceImpl();
 		
-		return productoService.findProductos();
+		try {
+			return productoService.findProductos();
+		}catch (Exception e) {
+			throw new InternalServerError(e);
+		}
 	}
 }

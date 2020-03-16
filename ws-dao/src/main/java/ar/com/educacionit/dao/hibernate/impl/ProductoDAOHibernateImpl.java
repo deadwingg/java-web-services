@@ -1,4 +1,4 @@
-package ar.com.educacionit.dao.impl;
+package ar.com.educacionit.dao.hibernate.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,14 +9,14 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
 import ar.com.educacionit.dao.ProductoDAO;
+import ar.com.educacionit.dao.hibernate.HibernateUtils;
 import ar.com.educacionit.domain.Producto;
-import ar.com.educacionit.hibernate.HibernateUtils;
 
-public class ProductoDAOImpl implements ProductoDAO {
+public class ProductoDAOHibernateImpl implements ProductoDAO {
 
 	private SessionFactory factory;
 	
-	public ProductoDAOImpl() {
+	public ProductoDAOHibernateImpl() {
 		
 		factory = HibernateUtils.getSessionFactory();
 	}
@@ -79,8 +79,6 @@ public class ProductoDAOImpl implements ProductoDAO {
 
 			// Create Query object.
 			Query<Producto> query = session.createQuery(sql);
-
-			// query.setParameter("codigo", codigo);
 
 			// Execute query.
 			products = query.getResultList();

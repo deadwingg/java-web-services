@@ -6,6 +6,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebService;
 
 import ar.com.educacionit.domain.Producto;
+import ar.com.educacionit.exception.InternalServerError;
 
 @WebService
 public interface ProductoWSService {
@@ -14,5 +15,5 @@ public interface ProductoWSService {
 	public Producto getProducto(String codigoProducto);
 	
 	@WebMethod()
-	public List<Producto> findProductos();
+	public List<Producto> findProductos() throws InternalServerError;
 }

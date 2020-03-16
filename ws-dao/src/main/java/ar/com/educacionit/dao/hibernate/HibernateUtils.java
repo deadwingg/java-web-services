@@ -1,4 +1,4 @@
-package ar.com.educacionit.hibernate;
+package ar.com.educacionit.dao.hibernate;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;

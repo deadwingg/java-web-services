@@ -22,6 +22,18 @@ public class Producto {
 	@Column(name = "CODIGO", length = 20, nullable = false, unique = true)
 	private String codigo;// UNIQUE
 
+	//constructor necesario para hinernate
+	public Producto() {
+		
+	}
+	
+	public Producto(Long id, String descripcion, Float precio, String codigo) {
+		this.id = id;
+		this.descripcion = descripcion;
+		this.precio = precio;
+		this.codigo = codigo;
+	}
+
 	public Long getId() {
 		return id;
 	}
