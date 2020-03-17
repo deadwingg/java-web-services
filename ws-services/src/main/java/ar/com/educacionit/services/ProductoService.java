@@ -10,4 +10,6 @@ public interface ProductoService {
 	public Producto getProducto(String codigo);
 
 	public List<Producto> findProductos() throws InternalServerError;
+
+	public Producto createProducto(Producto producto) throws InternalServerError;
 }

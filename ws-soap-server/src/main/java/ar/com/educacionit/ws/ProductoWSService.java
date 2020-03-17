@@ -7,6 +7,7 @@ import javax.jws.WebService;
 
 import ar.com.educacionit.domain.Producto;
 import ar.com.educacionit.exception.InternalServerError;
+import ar.com.educacionit.ws.dto.CreateProductoDTO;
 
 @WebService
 public interface ProductoWSService {
@@ -16,4 +17,7 @@ public interface ProductoWSService {
 	
 	@WebMethod()
 	public List<Producto> findProductos() throws InternalServerError;
+	
+	@WebMethod()
+	public Producto createProducto(CreateProductoDTO request) throws InternalServerError;
 }

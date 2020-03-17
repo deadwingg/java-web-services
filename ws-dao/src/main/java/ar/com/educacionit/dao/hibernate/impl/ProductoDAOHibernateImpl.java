@@ -11,6 +11,7 @@ import org.hibernate.query.Query;
 import ar.com.educacionit.dao.ProductoDAO;
 import ar.com.educacionit.dao.hibernate.HibernateUtils;
 import ar.com.educacionit.domain.Producto;
+import ar.com.educacionit.exception.InternalServerError;
 
 public class ProductoDAOHibernateImpl implements ProductoDAO {
 
@@ -92,6 +93,31 @@ public class ProductoDAOHibernateImpl implements ProductoDAO {
 			session.getTransaction().rollback();
 		}
 		return products;
+	}
+
+	@Override
+	public Producto createProducto(Producto producto) throws InternalServerError {
+		Session session = factory.getCurrentSession();
+
+		try {
+
+			// All the action with DB via Hibernate
+			// must be located in one transaction.
+			// Start Transaction.
+			session.getTransaction().begin();
+
+			session.saveOrUpdate(producto);
+			
+			// Commit data.
+			session.getTransaction().commit();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			// Rollback in case of an error occurred.
+			session.getTransaction().rollback();
+			throw new InternalServerError(e);
+		}
+		return producto;
 	}
 
 }

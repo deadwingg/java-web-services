@@ -123,4 +123,33 @@ public class ProductoDAOJDBCImpl implements ProductoDAO {
 		super.finalize();
 		cerrarConexiones(con);
 	}
+
+	@Override
+	public Producto createProducto(Producto producto) throws InternalServerError {
+		
+		PreparedStatement pst = null;
+
+		ResultSet res = null;
+
+		try {
+
+			pst = this.con.prepareStatement("insert into from producto (descripcion,precio,codigo) values(?,?,?)");
+
+			pst.setString(1, producto.getDescripcion());
+			
+			pst.setFloat(2, producto.getPrecio());
+			
+			pst.setString(3, producto.getCodigo());
+			
+			pst.execute();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new InternalServerError(e);
+		} finally {
+			cerrarConexiones(pst, res);
+		}
+
+		return producto;
+	}
 }

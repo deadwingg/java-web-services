@@ -12,7 +12,7 @@ public class ProductoServicesWSMain {
 		
 		Endpoint.publish("http://localhost:8000/", new ProductoWSServiceImpl());
 		
-		System.out.println("Se ha iniciado el ws PersonaService: en http://localhost:8000/");
-		System.out.println("La direccion del wsdl ws http://localhost:8000/?wsdl");
+		System.out.println("Se ha iniciado el ws ProductoWSService: en http://localhost:8000/");
+		System.out.println("La direccion del wsdl es: http://localhost:8000/?wsdl");
 	}
 }
