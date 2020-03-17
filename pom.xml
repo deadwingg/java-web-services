@@ -20,6 +20,7 @@
 		<module>ws-soap-server</module>
     	<module>ws-domain</module>
     	<module>ws-dao</module>
-    	<module>ws-services</module>    	
-	</modules>
+    	<module>ws-services</module>
+    	<module>ws-soap-client</module>
+  </modules>
 </project>
