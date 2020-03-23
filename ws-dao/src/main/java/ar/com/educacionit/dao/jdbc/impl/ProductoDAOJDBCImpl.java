@@ -4,13 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.educacionit.dao.AdministradorDeConexiones;
 import ar.com.educacionit.dao.ProductoDAO;
+import ar.com.educacionit.dao.exceptions.DuplicateException;
+import ar.com.educacionit.dao.exceptions.GenericExeption;
 import ar.com.educacionit.domain.Producto;
-import ar.com.educacionit.exception.InternalServerError;
 
 public class ProductoDAOJDBCImpl implements ProductoDAO {
 
@@ -31,14 +33,14 @@ public class ProductoDAOJDBCImpl implements ProductoDAO {
 		
 		try {
 
-			pst = this.con.prepareStatement("select * from producto where codigo=?");
+			pst = this.con.prepareStatement("select * from PRODUCTO where codigo=?");
 
 			pst.setString(1, codigo);
 			
 			res = pst.executeQuery();
 
 			if(res.next()) {
-				producto = new Producto(res.getLong("id"), res.getString("descripcion"), res.getFloat("precio"), res.getString("codigo"));
+				producto = new Producto(res.getLong("ID"), res.getString("DESCRIPCION"), res.getFloat("PRECIO"), res.getString("CODIGO"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -50,7 +52,7 @@ public class ProductoDAOJDBCImpl implements ProductoDAO {
 	}
 
 	@Override
-	public List<Producto> findProductos() throws InternalServerError {
+	public List<Producto> findProductos() throws GenericExeption {
 
 		List<Producto> productos = new ArrayList<>();
 
@@ -60,17 +62,17 @@ public class ProductoDAOJDBCImpl implements ProductoDAO {
 
 		try {
 
-			pst = this.con.prepareStatement("select * from producto");
+			pst = this.con.prepareStatement("selec* from PRODUCTO");
 
 			res = pst.executeQuery();
 
 			while (res.next()) {
-				Producto p = new Producto(res.getLong("id"), res.getString("descripcion"), res.getFloat("precio"), res.getString("codigo"));
+				Producto p = new Producto(res.getLong("ID"), res.getString("DESCRIPCION"), res.getFloat("PRECIO"), res.getString("CODIGO"));
 				productos.add(p);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new InternalServerError(e);
+			throw new GenericExeption(e.getMessage(), e);
 		} finally {
 			cerrarConexiones(pst, res);
 		}
@@ -125,7 +127,7 @@ public class ProductoDAOJDBCImpl implements ProductoDAO {
 	}
 
 	@Override
-	public Producto createProducto(Producto producto) throws InternalServerError {
+	public Producto createProducto(Producto producto) throws GenericExeption, DuplicateException {
 		
 		PreparedStatement pst = null;
 
@@ -133,7 +135,7 @@ public class ProductoDAOJDBCImpl implements ProductoDAO {
 
 		try {
 
-			pst = this.con.prepareStatement("insert into from producto (descripcion,precio,codigo) values(?,?,?)");
+			pst = this.con.prepareStatement("insert into PRODUCTO (DESCRIPCION,PRECIO,CODIGO) values(?,?,?)");
 
 			pst.setString(1, producto.getDescripcion());
 			
@@ -142,10 +144,11 @@ public class ProductoDAOJDBCImpl implements ProductoDAO {
 			pst.setString(3, producto.getCodigo());
 			
 			pst.execute();
-
+		}catch (SQLIntegrityConstraintViolationException e) {
+			throw new DuplicateException(e.getMessage(),e);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new InternalServerError(e);
+			throw new GenericExeption(e.getMessage(),e);
 		} finally {
 			cerrarConexiones(pst, res);
 		}

@@ -6,24 +6,28 @@ import javax.jws.WebService;
 import javax.xml.ws.BindingType;
 
 import ar.com.educacionit.domain.Producto;
-import ar.com.educacionit.exception.InternalServerError;
 import ar.com.educacionit.services.ProductoService;
+import ar.com.educacionit.services.exceptions.ServiceException;
 import ar.com.educacionit.services.impl.ProductoServiceImpl;
 import ar.com.educacionit.ws.ProductoWSService;
 import ar.com.educacionit.ws.dto.CreateProductoDTO;
+import ar.com.educacionit.ws.faults.InternalServerError;
 
 @WebService(
-		endpointInterface = "ar.com.educacionit.ws.ProductoWSService", 
-		serviceName = "ProductoWSServiceImpl", 
-		targetNamespace = "http://ar.com.educacionit.ws.impl/")
-@BindingType(value = "http://java.sun.com/xml/ns/jaxws/2003/05/soap/bindings/HTTP/")
+		endpointInterface = "ar.com.educacionit.ws.ProductoWSService")
+@BindingType(
+		value = "http://java.sun.com/xml/ns/jaxws/2003/05/soap/bindings/HTTP/")
 public class ProductoWSServiceImpl implements ProductoWSService {
 
-	public Producto getProducto(String codigoProducto) {
+	public Producto getProducto(String codigoProducto) throws InternalServerError {
 
 		ProductoService productoService = new ProductoServiceImpl();
 
-		return productoService.getProducto(codigoProducto);
+		try {
+			return productoService.getProducto(codigoProducto);
+		} catch (ServiceException e) {
+			throw new InternalServerError(e);
+		}
 	}
 
 	public List<Producto> findProductos() throws InternalServerError {
@@ -40,13 +44,13 @@ public class ProductoWSServiceImpl implements ProductoWSService {
 	public Producto createProducto(CreateProductoDTO request) throws InternalServerError {
 		ProductoService productoService = new ProductoServiceImpl();
 
+		Producto producto = new Producto();
+		producto.setCodigo(request.getCodigo());
+		producto.setDescripcion(request.getDescripcion());
+		producto.setPrecio(request.getPrecio());
 		try {
-			Producto producto = new Producto();
-			producto.setCodigo(request.getCodigo());
-			producto.setDescripcion(request.getDescripcion());
-			producto.setPrecio(request.getPrecio());
 			return productoService.createProducto(producto);
-		} catch (Exception e) {
+		} catch (ServiceException e) {
 			throw new InternalServerError(e);
 		}
 	}

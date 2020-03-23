@@ -2,14 +2,15 @@ package ar.com.educacionit.dao;
 
 import java.util.List;
 
+import ar.com.educacionit.dao.exceptions.DuplicateException;
+import ar.com.educacionit.dao.exceptions.GenericExeption;
 import ar.com.educacionit.domain.Producto;
-import ar.com.educacionit.exception.InternalServerError;
 
 public interface ProductoDAO {
 
-	public Producto getProducto(String codigo);
+	public Producto getProducto(String codigo) throws GenericExeption;
 
-	public List<Producto> findProductos() throws InternalServerError;
+	public List<Producto> findProductos() throws GenericExeption;
 
-	public Producto createProducto(Producto producto) throws InternalServerError;
+	public Producto createProducto(Producto producto) throws DuplicateException, GenericExeption;
 }

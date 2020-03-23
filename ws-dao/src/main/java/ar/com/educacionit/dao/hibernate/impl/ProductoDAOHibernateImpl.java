@@ -6,12 +6,14 @@ import java.util.Optional;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.query.Query;
 
 import ar.com.educacionit.dao.ProductoDAO;
+import ar.com.educacionit.dao.exceptions.DuplicateException;
+import ar.com.educacionit.dao.exceptions.GenericExeption;
 import ar.com.educacionit.dao.hibernate.HibernateUtils;
 import ar.com.educacionit.domain.Producto;
-import ar.com.educacionit.exception.InternalServerError;
 
 public class ProductoDAOHibernateImpl implements ProductoDAO {
 
@@ -23,7 +25,7 @@ public class ProductoDAOHibernateImpl implements ProductoDAO {
 	}
 	
 	@Override
-	public Producto getProducto(String codigo) {
+	public Producto getProducto(String codigo) throws GenericExeption {
 		
 		Session session = factory.getCurrentSession();
 
@@ -58,6 +60,7 @@ public class ProductoDAOHibernateImpl implements ProductoDAO {
 			e.printStackTrace();
 			// Rollback in case of an error occurred.
 			session.getTransaction().rollback();
+			throw new GenericExeption(e.getMessage(), e);
 		}
 		return producto;
 	}
@@ -96,7 +99,7 @@ public class ProductoDAOHibernateImpl implements ProductoDAO {
 	}
 
 	@Override
-	public Producto createProducto(Producto producto) throws InternalServerError {
+	public Producto createProducto(Producto producto) throws GenericExeption, DuplicateException {
 		Session session = factory.getCurrentSession();
 
 		try {
@@ -110,12 +113,17 @@ public class ProductoDAOHibernateImpl implements ProductoDAO {
 			
 			// Commit data.
 			session.getTransaction().commit();
-
+		}catch (ConstraintViolationException e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+			throw new DuplicateException(e.getCause().getMessage(),e);
 		} catch (Exception e) {
 			e.printStackTrace();
 			// Rollback in case of an error occurred.
 			session.getTransaction().rollback();
-			throw new InternalServerError(e);
+			throw new GenericExeption(e.getMessage(),e);
+		}finally {
+			session.close();
 		}
 		return producto;
 	}
