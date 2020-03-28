@@ -22,5 +22,6 @@
     	<module>ws-dao</module>
     	<module>ws-services</module>
     	<module>ws-soap-server-webapp</module>
+    <module>ws-rest-server</module>
   </modules>
 </project>

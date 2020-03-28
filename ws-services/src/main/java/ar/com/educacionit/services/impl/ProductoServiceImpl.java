@@ -6,7 +6,6 @@ import ar.com.educacionit.dao.ProductoDAO;
 import ar.com.educacionit.dao.exceptions.DuplicateException;
 import ar.com.educacionit.dao.exceptions.GenericExeption;
 import ar.com.educacionit.dao.hibernate.impl.ProductoDAOHibernateImpl;
-import ar.com.educacionit.dao.jdbc.impl.ProductoDAOJDBCImpl;
 import ar.com.educacionit.domain.Producto;
 import ar.com.educacionit.services.ProductoService;
 import ar.com.educacionit.services.exceptions.ServiceException;
@@ -47,6 +46,26 @@ public class ProductoServiceImpl implements ProductoService {
 		} catch (DuplicateException e) {
 			e.printStackTrace();
 			throw new ServiceException("Producto existente ["+e.getMessage()+"]", e);
+		} catch (GenericExeption e) {
+			e.printStackTrace();
+			throw new ServiceException("Error inesperado creando el producto ["+e.getMessage()+"]", e);
+		}
+	}
+	
+	@Override
+	public Producto updateProducto(Producto producto) throws ServiceException {
+		try {
+			return this.productoDao.updateProducto(producto);
+		} catch (GenericExeption e) {
+			e.printStackTrace();
+			throw new ServiceException("Error inesperado creando el producto ["+e.getMessage()+"]", e);
+		}
+	}
+
+	@Override
+	public Producto eliminarProducto(String codigoProducto) throws ServiceException {
+		try {
+			return this.productoDao.deleteProducto(codigoProducto);
 		} catch (GenericExeption e) {
 			e.printStackTrace();
 			throw new ServiceException("Error inesperado creando el producto ["+e.getMessage()+"]", e);
